@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import RevealText, { RevealFade } from "@/components/ui/RevealText";
-import ContactThree from "@/components/ui/ContactThree";
+import HeroCanvas from "@/components/ui/HeroCanvas";
 
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -134,45 +134,17 @@ export default function ContactCTA() {
             </div>
           </RevealFade>
 
-          {/* Right: 3D on top, info text below */}
-          <RevealFade delay={0.25}>
-            <div className="flex flex-col gap-8">
-
-              {/* Three.js animation block */}
-              <div className="relative w-full" style={{ height: "clamp(260px, 34vw, 360px)" }}>
-                <ContactThree />
-              </div>
-
-              {/* ── Info rows ────────────────────────────────────── */}
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex flex-col gap-3">
-                  <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
-                    We work with
-                  </span>
-                  {["Boutique & luxury hotels", "Resort & villa operators", "Hotel groups", "Management companies"].map((item) => (
-                    <div key={item} className="flex items-center gap-2">
-                      <span className="w-3 h-px bg-[oklch(71%_0.105_42)] shrink-0" />
-                      <span className="text-[0.8125rem] text-[oklch(42%_0.009_55)] leading-snug">{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-col gap-6">
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
-                      Response time
-                    </span>
-                    <span className="text-[0.8125rem] text-[oklch(42%_0.009_55)]">Within 1 business day</span>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
-                      Studio
-                    </span>
-                    <span className="text-[0.8125rem] text-[oklch(42%_0.009_55)]">Global — remote & on-site</span>
-                  </div>
-                </div>
-              </div>
-
+          {/* Right: branching tree canvas — same as hero */}
+          <RevealFade delay={0.2}>
+            <div
+              className="relative w-full overflow-hidden"
+              style={{ height: "clamp(380px, 48vw, 560px)" }}
+            >
+              {/* Left-edge blend so it doesn't hard-cut against the form */}
+              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[oklch(97%_0.008_65)] to-transparent z-10 pointer-events-none" />
+              {/* Soft bottom fade */}
+              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[oklch(97%_0.008_65/0.6)] to-transparent z-10 pointer-events-none" />
+              <HeroCanvas />
             </div>
           </RevealFade>
         </div>
