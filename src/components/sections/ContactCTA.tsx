@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import RevealText, { RevealFade } from "@/components/ui/RevealText";
-import ContactCanvas from "@/components/ui/ContactCanvas";
+import ContactThree from "@/components/ui/ContactThree";
 
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -134,56 +134,10 @@ export default function ContactCTA() {
             </div>
           </RevealFade>
 
-          {/* Right: animated visual panel + info */}
+          {/* Right: info with floating canvas background */}
           <RevealFade delay={0.25}>
-            <div className="flex flex-col gap-8">
-
-              {/* ── Animated panel ───────────────────────────────── */}
-              <div
-                className="relative rounded-2xl overflow-hidden"
-                style={{
-                  height: "clamp(280px, 36vw, 380px)",
-                  backgroundColor: "oklch(17% 0.012 52)",
-                }}
-              >
-                <ContactCanvas />
-
-                {/* Overlay text — bottom-left */}
-                <div className="absolute bottom-0 left-0 right-0 p-7 flex items-end justify-between">
-                  <div>
-                    <p
-                      className="text-[0.6875rem] font-[600] tracking-[0.14em] uppercase mb-1.5"
-                      style={{ color: "oklch(71% 0.105 42)", fontFamily: "var(--font-urbanist)" }}
-                    >
-                      Ready when you are
-                    </p>
-                    <p
-                      className="text-[clamp(1.1rem,2vw,1.4rem)] font-[300] italic leading-tight"
-                      style={{ fontFamily: "var(--font-spectral)", color: "oklch(85% 0.008 60)" }}
-                    >
-                      Let's start the conversation.
-                    </p>
-                  </div>
-                  <a
-                    href="mailto:hello@darvincode.com"
-                    className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center border border-[oklch(35%_0.008_55)] hover:border-[oklch(71%_0.105_42)] hover:bg-[oklch(71%_0.105_42/0.15)] transition-all duration-300"
-                  >
-                    <svg className="w-4 h-4" style={{ color: "oklch(71% 0.105 42)" }} viewBox="0 0 16 16" fill="none">
-                      <path d="M3 13L13 3M13 3H6M13 3v7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </a>
-                </div>
-
-                {/* Top-right dim label */}
-                <div className="absolute top-5 right-6">
-                  <span
-                    className="text-[0.5625rem] font-[500] tracking-[0.1em] uppercase"
-                    style={{ color: "oklch(40% 0.007 55)" }}
-                  >
-                    hello@darvincode.com
-                  </span>
-                </div>
-              </div>
+            <div className="relative flex flex-col gap-8">
+              <ContactThree />
 
               {/* ── Info rows ────────────────────────────────────── */}
               <div className="grid grid-cols-2 gap-6">
