@@ -26,22 +26,14 @@ export default function Hero() {
       className="relative min-h-screen flex flex-col overflow-hidden bg-[oklch(97%_0.008_65)] border-b border-[oklch(88%_0.010_60)]"
       aria-label="Hero"
     >
-      {/* Canvas animation — right side panel */}
-      <div className="absolute right-0 top-0 w-full md:w-[52%] h-full pointer-events-none select-none">
-        {/* Soft gradient veil blending canvas into bg */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[oklch(97%_0.008_65)] via-[oklch(97%_0.008_65/0.3)] to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[oklch(97%_0.008_65/0.4)] via-transparent to-[oklch(97%_0.008_65/0.6)] z-10" />
+      {/* Canvas animation — right side panel, fills viewport with minimal veiling */}
+      <div className="absolute right-0 top-0 w-full md:w-[58%] h-full pointer-events-none select-none">
+        {/* Narrow left-edge blend so canvas doesn't clash with text column */}
+        <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[oklch(97%_0.008_65)] to-transparent z-10" />
+        {/* Soft bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[oklch(97%_0.008_65/0.7)] to-transparent z-10" />
         <HeroCanvas />
       </div>
-
-      {/* Subtle warm tinted gradient backdrop */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 65% 45%, oklch(87% 0.055 42 / 0.18) 0%, transparent 70%)",
-        }}
-      />
 
       {/* Content */}
       <motion.div
