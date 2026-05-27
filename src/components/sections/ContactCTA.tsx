@@ -1,10 +1,38 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import RevealText, { RevealFade } from "@/components/ui/RevealText";
 import Lottie from "lottie-react";
 import emailAnimation from "@/../public/animations/email.json";
+
+function EmailLottie() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lottieRef = useRef<any>(null);
+  const tidRef    = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    lottieRef.current?.setSpeed(0.45);
+    return () => clearTimeout(tidRef.current);
+  }, []);
+
+  const scheduleReplay = () => {
+    tidRef.current = setTimeout(() => {
+      lottieRef.current?.goToAndPlay(0);
+    }, 10000);
+  };
+
+  return (
+    <Lottie
+      lottieRef={lottieRef}
+      animationData={emailAnimation}
+      loop={false}
+      autoplay
+      onComplete={scheduleReplay}
+      className="w-full max-w-[320px]"
+    />
+  );
+}
 
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -64,7 +92,7 @@ export default function ContactCTA() {
         </div>
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-start">
 
           {/* Left: form */}
           <RevealFade delay={0.15}>
@@ -135,14 +163,10 @@ export default function ContactCTA() {
             </div>
           </RevealFade>
 
-          {/* Right: Lottie envelope animation */}
+          {/* Right: Lottie envelope — top-aligned with the first input */}
           <RevealFade delay={0.2}>
-            <div className="flex items-center justify-center">
-              <Lottie
-                animationData={emailAnimation}
-                loop
-                className="w-full max-w-[360px]"
-              />
+            <div className="flex items-start justify-center mt-[5.75rem]">
+              <EmailLottie />
             </div>
           </RevealFade>
         </div>
