@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import RevealText, { RevealFade } from "@/components/ui/RevealText";
+import ContactCanvas from "@/components/ui/ContactCanvas";
 
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -21,27 +22,25 @@ export default function ContactCTA() {
       ref={sectionRef}
       className="relative bg-[oklch(97%_0.008_65)] px-[clamp(1.5rem,4vw,4rem)] py-[clamp(6rem,10vw,10rem)] overflow-hidden"
     >
-      {/* Background decorative */}
+      {/* Soft warm radial behind the form side */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 50% 60%, oklch(87% 0.055 42 / 0.12) 0%, transparent 70%)",
+            "radial-gradient(ellipse 50% 60% at 25% 55%, oklch(87% 0.055 42 / 0.09) 0%, transparent 70%)",
         }}
       />
 
-      <div className="relative max-w-4xl">
+      <div className="relative">
         {/* Kicker */}
         <RevealFade>
-          <span
-            className="text-[0.6875rem] font-[600] tracking-[0.14em] uppercase text-[oklch(71%_0.105_42)] mb-8 block"
-          >
+          <span className="text-[0.6875rem] font-[600] tracking-[0.14em] uppercase text-[oklch(71%_0.105_42)] mb-8 block">
             Get in touch
           </span>
         </RevealFade>
 
         {/* Headline */}
-        <div className="mb-10">
+        <div className="mb-14">
           <RevealText>
             <h2
               className="text-[clamp(2.75rem,7vw,6.5rem)] font-[800] leading-[0.91] tracking-[-0.04em] text-[oklch(19%_0.010_55)]"
@@ -56,10 +55,7 @@ export default function ContactCTA() {
               animate={inView ? { y: 0 } : {}}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.12 }}
               className="text-[clamp(2.75rem,7vw,6.5rem)] font-[300] leading-[0.91] tracking-[-0.04em] italic"
-              style={{
-                fontFamily: "var(--font-spectral)",
-                color: "oklch(71% 0.105 42)",
-              }}
+              style={{ fontFamily: "var(--font-spectral)", color: "oklch(71% 0.105 42)" }}
             >
               something great.
             </motion.h2>
@@ -67,15 +63,13 @@ export default function ContactCTA() {
         </div>
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 mt-14">
-          {/* Left: contact form */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-start">
+
+          {/* Left: form */}
           <RevealFade delay={0.15}>
             <div>
-              <p
-                className="text-[0.9375rem] leading-[1.7] text-[oklch(42%_0.009_55)] mb-8"
-              >
-                Tell us about your property and project. We'll respond within
-                one business day.
+              <p className="text-[0.9375rem] leading-[1.7] text-[oklch(42%_0.009_55)] mb-8">
+                Tell us about your property and project. We'll respond within one business day.
               </p>
 
               {!submitted ? (
@@ -112,18 +106,8 @@ export default function ContactCTA() {
                     className="group mt-1 flex items-center justify-center gap-3 bg-[oklch(19%_0.010_55)] text-[oklch(97%_0.008_65)] px-7 py-4 rounded-full text-[0.875rem] font-[600] tracking-[0.01em] hover:bg-[oklch(71%_0.105_42)] hover:text-[oklch(19%_0.010_55)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                   >
                     Send message
-                    <svg
-                      className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                    >
-                      <path
-                        d="M2 12L12 2M12 2H5M12 2v7"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                    <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 14 14" fill="none">
+                      <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
                 </form>
@@ -139,10 +123,7 @@ export default function ContactCTA() {
                       <path d="M3 8l4 4 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
-                  <h3
-                    className="text-[1.25rem] font-[700] tracking-[-0.02em] text-[oklch(19%_0.010_55)]"
-                    style={{ fontFamily: "var(--font-urbanist)" }}
-                  >
+                  <h3 className="text-[1.25rem] font-[700] tracking-[-0.02em] text-[oklch(19%_0.010_55)]" style={{ fontFamily: "var(--font-urbanist)" }}>
                     Message received.
                   </h3>
                   <p className="text-[0.9375rem] text-[oklch(42%_0.009_55)] leading-relaxed">
@@ -153,57 +134,87 @@ export default function ContactCTA() {
             </div>
           </RevealFade>
 
-          {/* Right: info */}
+          {/* Right: animated visual panel + info */}
           <RevealFade delay={0.25}>
-            <div className="flex flex-col gap-10">
-              {/* Contact links */}
-              <div className="flex flex-col gap-4">
-                <h3
-                  className="text-[0.6875rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]"
-                >
-                  Direct contact
-                </h3>
-                <a
-                  href="mailto:hello@darvincode.com"
-                  className="text-[1.125rem] font-[600] tracking-[-0.01em] text-[oklch(19%_0.010_55)] hover:text-[oklch(71%_0.105_42)] transition-colors duration-300"
-                >
-                  hello@darvincode.com
-                </a>
-              </div>
+            <div className="flex flex-col gap-8">
 
-              {/* Engagements */}
-              <div className="flex flex-col gap-4">
-                <h3
-                  className="text-[0.6875rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]"
-                >
-                  We work with
-                </h3>
-                {[
-                  "Boutique & luxury hotels",
-                  "Resort & villa operators",
-                  "Hotel groups & collections",
-                  "Hospitality management companies",
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-2.5">
-                    <span className="w-4 h-px bg-[oklch(71%_0.105_42)]" />
-                    <span className="text-[0.9375rem] text-[oklch(42%_0.009_55)]">
-                      {item}
-                    </span>
+              {/* ── Animated panel ───────────────────────────────── */}
+              <div
+                className="relative rounded-2xl overflow-hidden"
+                style={{
+                  height: "clamp(280px, 36vw, 380px)",
+                  backgroundColor: "oklch(17% 0.012 52)",
+                }}
+              >
+                <ContactCanvas />
+
+                {/* Overlay text — bottom-left */}
+                <div className="absolute bottom-0 left-0 right-0 p-7 flex items-end justify-between">
+                  <div>
+                    <p
+                      className="text-[0.6875rem] font-[600] tracking-[0.14em] uppercase mb-1.5"
+                      style={{ color: "oklch(71% 0.105 42)", fontFamily: "var(--font-urbanist)" }}
+                    >
+                      Ready when you are
+                    </p>
+                    <p
+                      className="text-[clamp(1.1rem,2vw,1.4rem)] font-[300] italic leading-tight"
+                      style={{ fontFamily: "var(--font-spectral)", color: "oklch(85% 0.008 60)" }}
+                    >
+                      Let's start the conversation.
+                    </p>
                   </div>
-                ))}
+                  <a
+                    href="mailto:hello@darvincode.com"
+                    className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center border border-[oklch(35%_0.008_55)] hover:border-[oklch(71%_0.105_42)] hover:bg-[oklch(71%_0.105_42/0.15)] transition-all duration-300"
+                  >
+                    <svg className="w-4 h-4" style={{ color: "oklch(71% 0.105 42)" }} viewBox="0 0 16 16" fill="none">
+                      <path d="M3 13L13 3M13 3H6M13 3v7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+
+                {/* Top-right dim label */}
+                <div className="absolute top-5 right-6">
+                  <span
+                    className="text-[0.5625rem] font-[500] tracking-[0.1em] uppercase"
+                    style={{ color: "oklch(40% 0.007 55)" }}
+                  >
+                    hello@darvincode.com
+                  </span>
+                </div>
               </div>
 
-              {/* Location */}
-              <div className="flex flex-col gap-2 mt-auto">
-                <span
-                  className="text-[0.6875rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]"
-                >
-                  Studio
-                </span>
-                <span className="text-[0.9375rem] text-[oklch(42%_0.009_55)]">
-                  Global — working remotely & on-site
-                </span>
+              {/* ── Info rows ────────────────────────────────────── */}
+              <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col gap-3">
+                  <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
+                    We work with
+                  </span>
+                  {["Boutique & luxury hotels", "Resort & villa operators", "Hotel groups", "Management companies"].map((item) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <span className="w-3 h-px bg-[oklch(71%_0.105_42)] shrink-0" />
+                      <span className="text-[0.8125rem] text-[oklch(42%_0.009_55)] leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
+                      Response time
+                    </span>
+                    <span className="text-[0.8125rem] text-[oklch(42%_0.009_55)]">Within 1 business day</span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
+                      Studio
+                    </span>
+                    <span className="text-[0.8125rem] text-[oklch(42%_0.009_55)]">Global — remote & on-site</span>
+                  </div>
+                </div>
               </div>
+
             </div>
           </RevealFade>
         </div>
