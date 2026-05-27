@@ -8,29 +8,42 @@ import emailAnimation from "@/../public/animations/email.json";
 
 function EmailLottie() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const lottieRef = useRef<any>(null);
-  const tidRef    = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const lottieRef  = useRef<any>(null);
+  const tidRef     = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     lottieRef.current?.setSpeed(0.45);
     return () => clearTimeout(tidRef.current);
   }, []);
 
-  const scheduleReplay = () => {
+  const onComplete = () => {
+    // Fade out immediately after animation ends
+    setVisible(false);
+    // After 5 s total, fade back in and replay
     tidRef.current = setTimeout(() => {
-      lottieRef.current?.goToAndPlay(0);
-    }, 10000);
+      setVisible(true);
+      // Small delay to let opacity transition start before playing
+      setTimeout(() => lottieRef.current?.goToAndPlay(0), 50);
+    }, 5000);
   };
 
   return (
-    <Lottie
-      lottieRef={lottieRef}
-      animationData={emailAnimation}
-      loop={false}
-      autoplay
-      onComplete={scheduleReplay}
-      className="w-full max-w-[320px]"
-    />
+    <div
+      style={{
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.4s ease",
+      }}
+    >
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={emailAnimation}
+        loop={false}
+        autoplay
+        onComplete={onComplete}
+        className="w-full max-w-[300px]"
+      />
+    </div>
   );
 }
 
@@ -49,7 +62,7 @@ export default function ContactCTA() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative bg-[oklch(97%_0.008_65)] px-[clamp(1.5rem,4vw,4rem)] py-[clamp(6rem,10vw,10rem)] overflow-hidden"
+      className="relative bg-[oklch(97%_0.008_65)] px-[clamp(1.5rem,4vw,4rem)] pt-[clamp(4rem,7vw,7rem)] pb-[clamp(5rem,8vw,8rem)] overflow-hidden"
     >
       {/* Soft warm radial behind the form side */}
       <div
@@ -92,7 +105,7 @@ export default function ContactCTA() {
         </div>
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
 
           {/* Left: form */}
           <RevealFade delay={0.15}>
@@ -163,9 +176,9 @@ export default function ContactCTA() {
             </div>
           </RevealFade>
 
-          {/* Right: Lottie envelope — top-aligned with the first input */}
+          {/* Right: Lottie envelope — centred in column */}
           <RevealFade delay={0.2}>
-            <div className="flex items-start justify-center mt-[5.75rem]">
+            <div className="flex items-center justify-center">
               <EmailLottie />
             </div>
           </RevealFade>
