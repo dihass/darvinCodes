@@ -2,22 +2,99 @@
 
 import { useEffect, useRef } from "react";
 
-interface FlowParticle {
-  x: number;
-  y: number;
-  speed: number;
-  life: number;
-  maxLife: number;
-  colorShift: number; // slight warm/cool variation
-  weight: number;     // line width multiplier
+interface Branch {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  lineWidth: number;
+  depth: number;
+  startMs: number;   // when this branch begins growing
+  durationMs: number; // how long it takes to fully grow
+  r: number; g: number; b: number; // color
+  alpha: number;     // max opacity
+}
+
+const HOLD_MS   = 2200;
+const FADE_MS   = 1800;
+
+function buildTree(
+  branches: Branch[],
+  x: number,
+  y: number,
+  angle: number,
+  len: number,
+  depth: number,
+  startMs: number,
+  w: number,
+  h: number
+): void {
+  if (depth > 9 || len < 3.5) return;
+
+  // How long this branch takes to draw — shorter branches draw faster
+  const durationMs = Math.max(200, 700 * Math.pow(0.80, depth));
+
+  const endX = x + Math.cos(angle) * len;
+  const endY = y + Math.sin(angle) * len;
+
+  // Color shifts from warm coral (trunk) to soft peach (tips)
+  const t = Math.min(1, depth / 8);
+  const r = Math.round(188 + t * 22);
+  const g = Math.round(100 + t * 62);
+  const b = Math.round(68  + t * 72);
+  const alpha = Math.max(0.12, 0.85 - depth * 0.085);
+  const lineWidth = Math.max(0.3, 2.8 - depth * 0.28);
+
+  branches.push({ x1: x, y1: y, x2: endX, y2: endY, lineWidth, depth, startMs, durationMs, r, g, b, alpha });
+
+  const childStart = startMs + durationMs;
+
+  // Organic angle spread — widens slightly deeper into the tree
+  const spread   = 0.36 + depth * 0.018;
+  const jitterL  = (Math.random() - 0.5) * 0.18;
+  const jitterR  = (Math.random() - 0.5) * 0.18;
+  const nextLen  = len * (0.64 + Math.random() * 0.08);
+
+  buildTree(branches, endX, endY, angle - spread + jitterL, nextLen, depth + 1, childStart, w, h);
+  buildTree(branches, endX, endY, angle + spread + jitterR, nextLen, depth + 1, childStart, w, h);
+
+  // Occasional third tendril for asymmetric richness (~25% of non-deep branches)
+  if (depth < 5 && Math.random() < 0.28) {
+    const midAngle = angle + (Math.random() - 0.5) * 0.22;
+    buildTree(branches, endX, endY, midAngle, nextLen * 0.72, depth + 2, childStart, w, h);
+  }
+}
+
+function generateCycle(w: number, h: number): { branches: Branch[]; totalGrowMs: number } {
+  const branches: Branch[] = [];
+
+  // Root planted ~20% from left edge, ~10% from bottom — feels organic not centered
+  const rootX = w * (0.18 + Math.random() * 0.30);
+  const rootY = h * (0.92 + Math.random() * 0.06);
+
+  // Trunk angle leans very slightly left or right
+  const trunkAngle = -Math.PI / 2 + (Math.random() - 0.5) * 0.22;
+
+  // Trunk length: ~30–38% of canvas height
+  const trunkLen = h * (0.30 + Math.random() * 0.08);
+
+  buildTree(branches, rootX, rootY, trunkAngle, trunkLen, 0, 0, w, h);
+
+  // Calculate when the last branch finishes growing
+  const totalGrowMs = branches.reduce(
+    (max, b) => Math.max(max, b.startMs + b.durationMs),
+    0
+  );
+
+  return { branches, totalGrowMs };
 }
 
 export default function HeroCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const frameRef = useRef<number>(0);
-  const timeRef = useRef<number>(0);
-  const particlesRef = useRef<FlowParticle[]>([]);
-  const sizeRef = useRef({ w: 0, h: 0 });
+  const canvasRef  = useRef<HTMLCanvasElement>(null);
+  const frameRef   = useRef<number>(0);
+  const treeRef    = useRef<Branch[]>([]);
+  const cycleRef   = useRef({ startTs: 0, totalGrowMs: 0 });
+  const sizeRef    = useRef({ w: 0, h: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,104 +104,72 @@ export default function HeroCanvas() {
 
     const dpr = Math.min(window.devicePixelRatio ?? 1, 2);
 
-    // Flow field angle — layered sine waves for organic, non-repeating motion
-    const flowAngle = (x: number, y: number, t: number, w: number, h: number) => {
-      const nx = x / w;
-      const ny = y / h;
-      return (
-        Math.sin(nx * 2.8 + t * 0.38) * Math.cos(ny * 3.5 - t * 0.26) * Math.PI * 2.2 +
-        Math.cos(nx * 1.7 - t * 0.18) * Math.sin(ny * 2.2 + t * 0.22) * Math.PI * 0.9 +
-        Math.sin((nx + ny) * 2.1 - t * 0.14) * Math.PI * 0.4
-      );
-    };
-
-    const spawn = (w: number, h: number): FlowParticle => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      speed: 0.55 + Math.random() * 0.9,
-      life: 0,
-      maxLife: 160 + Math.random() * 220,
-      colorShift: (Math.random() - 0.5) * 30, // ±15 degree hue variation
-      weight: Math.random() < 0.12 ? 2.2 : 0.85, // ~12% are thicker accent trails
-    });
-
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
-      sizeRef.current = { w, h };
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      sizeRef.current = { w: rect.width, h: rect.height };
+      canvas.width  = rect.width  * dpr;
+      canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
-      // Warm-tinted clear on resize so no flash
-      ctx.fillStyle = "rgb(248, 244, 239)";
-      ctx.fillRect(0, 0, w, h);
-      // Respawn all particles for new dimensions
-      const count = Math.min(Math.floor((w * h) / 5800), 140);
-      particlesRef.current = Array.from({ length: count }, () => spawn(w, h));
-      // Give them random starting life so they don't all fade in at once
-      particlesRef.current.forEach((p) => {
-        p.life = Math.random() * p.maxLife;
-      });
     };
 
-    const draw = () => {
-      timeRef.current += 0.007; // cinematic slow pace
-      const t = timeRef.current;
+    const startNewCycle = (ts: number) => {
+      const { w, h } = sizeRef.current;
+      const { branches, totalGrowMs } = generateCycle(w, h);
+      treeRef.current = branches;
+      cycleRef.current = { startTs: ts, totalGrowMs };
+    };
+
+    const draw = (ts: number) => {
       const { w, h } = sizeRef.current;
       if (!w || !h) { frameRef.current = requestAnimationFrame(draw); return; }
 
-      // Partial clear — slow fade creates persistent trails
-      ctx.fillStyle = "rgba(248, 244, 239, 0.038)";
-      ctx.fillRect(0, 0, w, h);
+      // Bootstrap first cycle
+      if (cycleRef.current.startTs === 0) startNewCycle(ts);
 
-      const particles = particlesRef.current;
+      const { startTs, totalGrowMs } = cycleRef.current;
+      const elapsed = ts - startTs;
+      const cycleTotal = totalGrowMs + HOLD_MS + FADE_MS;
 
-      particles.forEach((p, i) => {
-        const angle = flowAngle(p.x, p.y, t, w, h);
-        const px = p.x;
-        const py = p.y;
+      // Roll into next cycle
+      if (elapsed >= cycleTotal) {
+        startNewCycle(ts);
+        frameRef.current = requestAnimationFrame(draw);
+        return;
+      }
 
-        p.x += Math.cos(angle) * p.speed;
-        p.y += Math.sin(angle) * p.speed;
-        p.life++;
+      // Global fade-out alpha
+      let globalAlpha = 1;
+      const fadeStart = totalGrowMs + HOLD_MS;
+      if (elapsed > fadeStart) {
+        const fp = (elapsed - fadeStart) / FADE_MS;
+        // Ease-in fade (accelerates toward end)
+        globalAlpha = 1 - fp * fp;
+      }
 
-        // Smooth life arc: fade in and out
-        const lifeRatio = p.life / p.maxLife;
-        const lifeFade = Math.sin(lifeRatio * Math.PI);
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalAlpha = globalAlpha;
+      ctx.lineCap = "round";
 
-        // Soft edge vignette
-        const edgePad = 80;
-        const ex = Math.min(p.x / edgePad, (w - p.x) / edgePad, 1);
-        const ey = Math.min(p.y / edgePad, (h - p.y) / edgePad, 1);
-        const edgeFade = Math.min(ex, ey);
+      treeRef.current.forEach((b) => {
+        const age = elapsed - b.startMs;
+        if (age <= 0) return;
 
-        const opacity = lifeFade * edgeFade * (p.weight > 1 ? 0.22 : 0.28);
+        // Ease-out cubic growth
+        const raw     = Math.min(1, age / b.durationMs);
+        const eased   = 1 - Math.pow(1 - raw, 3);
 
-        // Warm coral base with slight per-particle color shift
-        // Base RGB: (192, 108, 72) — deep peach/coral
-        const r = Math.round(192 + p.colorShift * 0.4);
-        const g = Math.round(108 - p.colorShift * 0.1);
-        const b = Math.round(72 + p.colorShift * 0.3);
+        const curX = b.x1 + (b.x2 - b.x1) * eased;
+        const curY = b.y1 + (b.y2 - b.y1) * eased;
 
         ctx.beginPath();
-        ctx.moveTo(px, py);
-        ctx.lineTo(p.x, p.y);
-        ctx.strokeStyle = `rgba(${r},${g},${b},${opacity})`;
-        ctx.lineWidth = p.weight;
-        ctx.lineCap = "round";
+        ctx.moveTo(b.x1, b.y1);
+        ctx.lineTo(curX, curY);
+        ctx.strokeStyle = `rgba(${b.r},${b.g},${b.b},${b.alpha})`;
+        ctx.lineWidth   = b.lineWidth;
         ctx.stroke();
-
-        // Respawn when life ends or particle drifts out
-        if (
-          p.life > p.maxLife ||
-          p.x < -8 || p.x > w + 8 ||
-          p.y < -8 || p.y > h + 8
-        ) {
-          particles[i] = spawn(w, h);
-        }
       });
 
+      ctx.globalAlpha = 1;
       frameRef.current = requestAnimationFrame(draw);
     };
 
