@@ -25,7 +25,7 @@ function EmailLottie() {
       setVisible(true);
       // Small delay to let opacity transition start before playing
       setTimeout(() => lottieRef.current?.goToAndPlay(0), 50);
-    }, 5000);
+    }, 2500);
   };
 
   return (
@@ -62,7 +62,7 @@ export default function ContactCTA() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative bg-[oklch(97%_0.008_65)] px-[clamp(1.5rem,4vw,4rem)] pt-[clamp(4rem,7vw,7rem)] pb-[clamp(5rem,8vw,8rem)] overflow-hidden"
+      className="relative bg-[oklch(97%_0.008_65)] px-[clamp(1.5rem,4vw,4rem)] pt-[clamp(2.5rem,5vw,5rem)] pb-[clamp(4rem,7vw,7rem)] overflow-hidden"
     >
       {/* Soft warm radial behind the form side */}
       <div
