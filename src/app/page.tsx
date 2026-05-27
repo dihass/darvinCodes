@@ -1,5 +1,6 @@
 import Navigation from "@/components/ui/Navigation";
 import Hero from "@/components/sections/Hero";
+import Marquee from "@/components/ui/Marquee";
 import Services from "@/components/sections/Services";
 import FeaturedWork from "@/components/sections/FeaturedWork";
 import WhyUs from "@/components/sections/WhyUs";
@@ -14,8 +15,10 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
+        <Marquee />
         <Services />
         <FeaturedWork />
+        <Marquee accent />
         <WhyUs />
         <Process />
         <ContactCTA />

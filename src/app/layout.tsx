@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Urbanist, Spectral } from "next/font/google";
+import { Bricolage_Grotesque, Spectral } from "next/font/google";
 import "./globals.css";
 
-const urbanist = Urbanist({
+const bricolage = Bricolage_Grotesque({
   variable: "--font-urbanist",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${urbanist.variable} ${spectral.variable}`}>
+    <html lang="en" className={`${bricolage.variable} ${spectral.variable}`}>
       <body className="noise-overlay antialiased">{children}</body>
     </html>
   );
