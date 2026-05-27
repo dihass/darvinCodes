@@ -3,7 +3,8 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import RevealText, { RevealFade } from "@/components/ui/RevealText";
-import HeroCanvas from "@/components/ui/HeroCanvas";
+import Lottie from "lottie-react";
+import emailAnimation from "@/../public/animations/email.json";
 
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -63,7 +64,7 @@ export default function ContactCTA() {
         </div>
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-end">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
 
           {/* Left: form */}
           <RevealFade delay={0.15}>
@@ -134,17 +135,14 @@ export default function ContactCTA() {
             </div>
           </RevealFade>
 
-          {/* Right: branching tree canvas — same as hero */}
+          {/* Right: Lottie envelope animation */}
           <RevealFade delay={0.2}>
-            <div
-              className="relative w-full overflow-hidden"
-              style={{ height: "clamp(340px, 44vw, 500px)" }}
-            >
-              {/* Left-edge blend so it doesn't hard-cut against the form */}
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[oklch(97%_0.008_65)] to-transparent z-10 pointer-events-none" />
-              {/* Soft bottom fade */}
-              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[oklch(97%_0.008_65/0.6)] to-transparent z-10 pointer-events-none" />
-              <HeroCanvas />
+            <div className="flex items-center justify-center">
+              <Lottie
+                animationData={emailAnimation}
+                loop
+                className="w-full max-w-[360px]"
+              />
             </div>
           </RevealFade>
         </div>
