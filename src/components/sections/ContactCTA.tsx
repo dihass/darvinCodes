@@ -63,7 +63,7 @@ export default function ContactCTA() {
         </div>
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-end">
 
           {/* Left: form */}
           <RevealFade delay={0.15}>
@@ -138,7 +138,7 @@ export default function ContactCTA() {
           <RevealFade delay={0.2}>
             <div
               className="relative w-full overflow-hidden"
-              style={{ height: "clamp(380px, 48vw, 560px)" }}
+              style={{ height: "clamp(340px, 44vw, 500px)" }}
             >
               {/* Left-edge blend so it doesn't hard-cut against the form */}
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[oklch(97%_0.008_65)] to-transparent z-10 pointer-events-none" />
