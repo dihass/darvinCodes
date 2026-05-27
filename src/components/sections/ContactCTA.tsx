@@ -136,11 +136,11 @@ export default function ContactCTA() {
 
           {/* Right: info with floating canvas background */}
           <RevealFade delay={0.25}>
-            <div className="relative flex flex-col gap-8">
+            <div className="relative flex flex-col justify-end min-h-[340px] lg:min-h-[420px]">
               <ContactThree />
 
               {/* ── Info rows ────────────────────────────────────── */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="relative grid grid-cols-2 gap-6 pt-6">
                 <div className="flex flex-col gap-3">
                   <span className="text-[0.625rem] font-[600] tracking-[0.12em] uppercase text-[oklch(62%_0.007_55)]">
                     We work with
