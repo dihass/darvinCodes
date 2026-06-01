@@ -41,7 +41,13 @@ export default function Navigation() {
             className="flex items-center gap-2.5 group"
             aria-label="Darvin Code"
           >
-            <span className="w-6 h-6 rounded-full bg-[oklch(71%_0.105_42)] group-hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+            <span className="w-7 h-7 rounded-full bg-[oklch(71%_0.105_42)] group-hover:scale-110 transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center shrink-0">
+              <svg viewBox="0 0 20 20" fill="none" className="w-3.5 h-3.5" aria-hidden="true">
+                <path d="M7 6.5L4 10l3 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13 6.5L16 10l-3 3.5" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M11.5 5l-3 10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+              </svg>
+            </span>
             <span
               className="font-[family-name:var(--font-urbanist)] font-700 text-[0.9375rem] tracking-[-0.02em] text-[oklch(19%_0.010_55)]"
               style={{ fontWeight: 700 }}
