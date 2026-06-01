@@ -4,12 +4,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import HeroCanvas from "@/components/ui/HeroCanvas";
 
-const stats = [
-  { value: "120+", label: "Properties served" },
-  { value: "8yr", label: "In hospitality tech" },
-  { value: "98%", label: "Client retention" },
-];
-
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -133,39 +127,6 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Stats row */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 1.2 }}
-          className="mt-20 pt-8 border-t border-[oklch(88%_0.010_60)] flex flex-wrap items-start gap-x-12 gap-y-6 max-w-lg"
-        >
-          {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 1.25 + i * 0.08,
-              }}
-              className="flex flex-col gap-1"
-            >
-              <span
-                className="text-[clamp(1.5rem,3vw,2rem)] font-[800] tracking-[-0.03em] text-[oklch(19%_0.010_55)]"
-                style={{ fontFamily: "var(--font-urbanist)" }}
-              >
-                {s.value}
-              </span>
-              <span
-                className="text-[0.6875rem] font-[500] tracking-[0.1em] uppercase text-[oklch(62%_0.007_55)]"
-              >
-                {s.label}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
