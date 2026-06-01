@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     "We build premium digital experiences and software for hotels, resorts, and hospitality brands. Crafted software that elevates every guest touchpoint.",
   icons: {
     icon: [
-      { url: "/icon", type: "image/png", sizes: "32x32" },
+      { url: "/icon", type: "image/png", sizes: "48x48" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     shortcut: "/favicon.ico",
