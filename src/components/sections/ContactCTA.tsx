@@ -50,7 +50,7 @@ function EmailLottie() {
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-60px" });
-  const [fields, setFields] = useState({ name: "", company: "", email: "", message: "" });
+  const [fields, setFields] = useState({ name: "", company: "", phone: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
 
   const set = (k: keyof typeof fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -138,6 +138,14 @@ export default function ContactCTA() {
                     placeholder="Your property / company"
                     value={fields.company}
                     onChange={set("company")}
+                    className="w-full px-4 py-3.5 bg-transparent border border-[oklch(82%_0.014_58)] rounded-xl text-[0.9375rem] text-[oklch(19%_0.010_55)] placeholder:text-[oklch(70%_0.007_55)] focus:outline-none focus:border-[oklch(71%_0.105_42)] transition-colors duration-300"
+                    style={{ fontFamily: "var(--font-urbanist)" }}
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Phone number"
+                    value={fields.phone}
+                    onChange={set("phone")}
                     className="w-full px-4 py-3.5 bg-transparent border border-[oklch(82%_0.014_58)] rounded-xl text-[0.9375rem] text-[oklch(19%_0.010_55)] placeholder:text-[oklch(70%_0.007_55)] focus:outline-none focus:border-[oklch(71%_0.105_42)] transition-colors duration-300"
                     style={{ fontFamily: "var(--font-urbanist)" }}
                   />
