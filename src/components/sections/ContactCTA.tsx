@@ -50,12 +50,21 @@ function EmailLottie() {
 export default function ContactCTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-60px" });
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [fields, setFields] = useState({ name: "", company: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const set = (k: keyof typeof fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setFields((f) => ({ ...f, [k]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) setSubmitted(true);
+    setStatus("sending");
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(fields),
+    });
+    setStatus(res.ok ? "done" : "error");
   };
 
   return (
@@ -114,25 +123,29 @@ export default function ContactCTA() {
                 Tell us about your property and project. We'll respond within one business day.
               </p>
 
-              {!submitted ? (
+              {status !== "done" ? (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                   <input
                     type="text"
                     placeholder="Your name"
+                    value={fields.name}
+                    onChange={set("name")}
                     className="w-full px-4 py-3.5 bg-transparent border border-[oklch(82%_0.014_58)] rounded-xl text-[0.9375rem] text-[oklch(19%_0.010_55)] placeholder:text-[oklch(70%_0.007_55)] focus:outline-none focus:border-[oklch(71%_0.105_42)] transition-colors duration-300"
                     style={{ fontFamily: "var(--font-urbanist)" }}
                   />
                   <input
                     type="text"
                     placeholder="Your property / company"
+                    value={fields.company}
+                    onChange={set("company")}
                     className="w-full px-4 py-3.5 bg-transparent border border-[oklch(82%_0.014_58)] rounded-xl text-[0.9375rem] text-[oklch(19%_0.010_55)] placeholder:text-[oklch(70%_0.007_55)] focus:outline-none focus:border-[oklch(71%_0.105_42)] transition-colors duration-300"
                     style={{ fontFamily: "var(--font-urbanist)" }}
                   />
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email address"
+                    value={fields.email}
+                    onChange={set("email")}
                     required
                     className="w-full px-4 py-3.5 bg-transparent border border-[oklch(82%_0.014_58)] rounded-xl text-[0.9375rem] text-[oklch(19%_0.010_55)] placeholder:text-[oklch(70%_0.007_55)] focus:outline-none focus:border-[oklch(71%_0.105_42)] transition-colors duration-300"
                     style={{ fontFamily: "var(--font-urbanist)" }}
@@ -140,17 +153,28 @@ export default function ContactCTA() {
                   <textarea
                     placeholder="Tell us about your project"
                     rows={4}
+                    value={fields.message}
+                    onChange={set("message")}
+                    required
                     className="w-full px-4 py-3.5 bg-transparent border border-[oklch(82%_0.014_58)] rounded-xl text-[0.9375rem] text-[oklch(19%_0.010_55)] placeholder:text-[oklch(70%_0.007_55)] focus:outline-none focus:border-[oklch(71%_0.105_42)] transition-colors duration-300 resize-none"
                     style={{ fontFamily: "var(--font-urbanist)" }}
                   />
+                  {status === "error" && (
+                    <p className="text-[0.8125rem] text-red-500">
+                      Something went wrong — please try again or email us directly.
+                    </p>
+                  )}
                   <button
                     type="submit"
-                    className="group mt-1 flex items-center justify-center gap-3 bg-[oklch(19%_0.010_55)] text-[oklch(97%_0.008_65)] px-7 py-4 rounded-full text-[0.875rem] font-[600] tracking-[0.01em] hover:bg-[oklch(71%_0.105_42)] hover:text-[oklch(19%_0.010_55)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    disabled={status === "sending"}
+                    className="group mt-1 flex items-center justify-center gap-3 bg-[oklch(19%_0.010_55)] text-[oklch(97%_0.008_65)] px-7 py-4 rounded-full text-[0.875rem] font-[600] tracking-[0.01em] hover:bg-[oklch(71%_0.105_42)] hover:text-[oklch(19%_0.010_55)] disabled:opacity-60 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                   >
-                    Send message
-                    <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    {status === "sending" ? "Sending…" : "Send message"}
+                    {status !== "sending" && (
+                      <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" viewBox="0 0 14 14" fill="none">
+                        <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
                   </button>
                 </form>
               ) : (
