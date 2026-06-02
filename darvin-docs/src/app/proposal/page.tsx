@@ -160,6 +160,13 @@ function ProposalPage() {
           </button>
           <button
             type="button"
+            onClick={() => router.push(`/contract?proposalId=${proposal.id}`)}
+            className="text-xs px-3 py-1.5 rounded border border-stone-600 text-stone-400 hover:text-white hover:border-stone-400 transition-colors cursor-pointer"
+          >
+            Generate Contract
+          </button>
+          <button
+            type="button"
             onClick={handleSave}
             className="text-xs px-3 py-1.5 rounded bg-stone-700 hover:bg-stone-600 text-white transition-colors cursor-pointer"
           >

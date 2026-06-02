@@ -1,6 +1,7 @@
 import { supabase } from "./supabase"
 import type { Proposal } from "@/types/proposal"
 import type { Invoice } from "@/types/invoice"
+import type { Contract } from "@/types/contract"
 
 // ── Proposals ─────────────────────────────────────────────────────────────
 
@@ -45,6 +46,29 @@ export async function saveInvoice(inv: Invoice): Promise<void> {
 
 export async function deleteInvoice(id: string): Promise<void> {
   const { error } = await supabase.from("invoices").delete().eq("id", id)
+  if (error) throw error
+}
+
+// ── Contracts ─────────────────────────────────────────────────────────────
+
+export async function getContracts(): Promise<Contract[]> {
+  const { data, error } = await supabase
+    .from("contracts")
+    .select("data")
+    .order("updated_at", { ascending: false })
+  if (error) throw error
+  return data.map((r) => r.data as Contract)
+}
+
+export async function saveContract(c: Contract): Promise<void> {
+  const { error } = await supabase
+    .from("contracts")
+    .upsert({ id: c.id, data: c, updated_at: c.updatedAt })
+  if (error) throw error
+}
+
+export async function deleteContract(id: string): Promise<void> {
+  const { error } = await supabase.from("contracts").delete().eq("id", id)
   if (error) throw error
 }
 

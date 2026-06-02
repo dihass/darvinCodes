@@ -4,7 +4,8 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import type { Proposal } from "@/types/proposal"
 import type { Invoice } from "@/types/invoice"
-import { getProposals, getInvoices, deleteProposal, deleteInvoice, exportBackup, importBackup } from "@/lib/storage"
+import { getProposals, getInvoices, getContracts, deleteProposal, deleteInvoice, deleteContract, exportBackup, importBackup } from "@/lib/storage"
+import type { Contract } from "@/types/contract"
 
 function EmptyState({ label }: { label: string }) {
   return (
@@ -122,16 +123,70 @@ function InvoiceCard({
   )
 }
 
+function ContractCard({
+  c,
+  onEdit,
+  onDelete,
+}: {
+  c: Contract
+  onEdit: () => void
+  onDelete: () => void
+}) {
+  const STATUS_STYLES: Record<string, string> = {
+    draft:  "text-stone-400 bg-stone-100",
+    sent:   "text-blue-700 bg-blue-50",
+    signed: "text-emerald-700 bg-emerald-50",
+  }
+  const status = c.status ?? "draft"
+
+  return (
+    <div className="bg-white rounded-xl border border-stone-200 p-4 hover:border-stone-300 transition-colors group">
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <p className="text-xs text-stone-400 font-medium uppercase tracking-wide">Contract</p>
+            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded capitalize ${STATUS_STYLES[status]}`}>
+              {status}
+            </span>
+          </div>
+          <h3 className="font-semibold text-stone-900 truncate">{c.contractNumber}</h3>
+          <p className="text-sm text-stone-400 truncate">{c.clientName || "—"}</p>
+        </div>
+        <span className="text-xs text-stone-300 flex-shrink-0 mt-1">{c.contractDate}</span>
+      </div>
+      <p className="text-xs text-stone-400 truncate mb-3">{c.projectName || "—"}</p>
+      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          type="button"
+          onClick={onEdit}
+          className="flex-1 text-xs py-1.5 rounded bg-[#1A1A1A] text-white hover:bg-stone-700 transition-colors cursor-pointer"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="text-xs px-3 py-1.5 rounded border border-stone-200 text-stone-400 hover:text-red-500 hover:border-red-200 transition-colors cursor-pointer"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function Dashboard() {
   const router = useRouter()
   const [proposals, setProposals] = useState<Proposal[]>([])
   const [invoices, setInvoices] = useState<Invoice[]>([])
+  const [contracts, setContracts] = useState<Contract[]>([])
   const [loading, setLoading] = useState(true)
 
   const refresh = async () => {
-    const [p, inv] = await Promise.all([getProposals(), getInvoices()])
+    const [p, inv, con] = await Promise.all([getProposals(), getInvoices(), getContracts()])
     setProposals(p)
     setInvoices(inv)
+    setContracts(con)
     setLoading(false)
   }
 
@@ -148,6 +203,12 @@ export default function Dashboard() {
   const handleDeleteInvoice = async (id: string) => {
     if (!confirm("Delete this invoice?")) return
     await deleteInvoice(id)
+    refresh()
+  }
+
+  const handleDeleteContract = async (id: string) => {
+    if (!confirm("Delete this contract?")) return
+    await deleteContract(id)
     refresh()
   }
 
@@ -215,6 +276,13 @@ export default function Dashboard() {
           >
             + New Invoice
           </button>
+          <button
+            type="button"
+            onClick={() => router.push("/contract")}
+            className="text-sm px-4 py-2 rounded-lg border border-stone-600 text-stone-300 hover:text-white hover:border-stone-400 font-medium transition-colors cursor-pointer"
+          >
+            + New Contract
+          </button>
         </div>
       </header>
 
@@ -247,7 +315,7 @@ export default function Dashboard() {
               )}
             </section>
 
-            <section>
+            <section className="mb-12">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-sm font-semibold text-stone-600 uppercase tracking-wider">
                   Invoices <span className="text-stone-300 font-normal ml-1">({invoices.length})</span>
@@ -263,6 +331,28 @@ export default function Dashboard() {
                       inv={inv}
                       onEdit={() => router.push(`/invoice?id=${inv.id}`)}
                       onDelete={() => handleDeleteInvoice(inv.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            <section>
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-sm font-semibold text-stone-600 uppercase tracking-wider">
+                  Contracts <span className="text-stone-300 font-normal ml-1">({contracts.length})</span>
+                </h2>
+              </div>
+              {contracts.length === 0 ? (
+                <EmptyState label="contracts" />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {contracts.map((c) => (
+                    <ContractCard
+                      key={c.id}
+                      c={c}
+                      onEdit={() => router.push(`/contract?id=${c.id}`)}
+                      onDelete={() => handleDeleteContract(c.id)}
                     />
                   ))}
                 </div>
