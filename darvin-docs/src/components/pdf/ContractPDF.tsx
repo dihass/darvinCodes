@@ -162,7 +162,7 @@ export function ContractPDF({ contract }: { contract: Contract }) {
           <View style={s.partyBlock}>
             <Text style={s.partyLabel}>Service Provider</Text>
             <Text style={s.partyName}>Darvin Code</Text>
-            <Text style={s.partyLine}>info.darvincode@gmail.com</Text>
+            <Text style={s.partyLine}>info@darvincode.com</Text>
             <Text style={s.partyMuted}>darvincode.com</Text>
           </View>
           <View style={s.partyBlock}>
@@ -266,7 +266,7 @@ export function ContractPDF({ contract }: { contract: Contract }) {
         <View style={s.footer}>
           <View style={s.footerRule} />
           <Text style={s.footerText}>
-            Darvin Code · info.darvincode@gmail.com · darvincode.com
+            Darvin Code · info@darvincode.com · darvincode.com
           </Text>
         </View>
       </Page>

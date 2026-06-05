@@ -432,7 +432,7 @@ export function InvoicePDF({ invoice }: { invoice: Invoice }) {
           <View style={s.metaBlock}>
             <Text style={s.metaSectionLabel}>From</Text>
             <Text style={s.metaName}>Darvin Code</Text>
-            <Text style={s.metaLine}>info.darvincode@gmail.com</Text>
+            <Text style={s.metaLine}>info@darvincode.com</Text>
             <Text style={s.metaLineMuted}>darvincode.com</Text>
           </View>
 
@@ -528,7 +528,7 @@ export function InvoicePDF({ invoice }: { invoice: Invoice }) {
         <View style={s.footer}>
           <View style={s.footerRule} />
           <Text style={s.footerText}>
-            Darvin Code · info.darvincode@gmail.com · darvincode.com
+            Darvin Code · info@darvincode.com · darvincode.com
           </Text>
         </View>
       </Page>

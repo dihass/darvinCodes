@@ -37,14 +37,14 @@ export default function Footer() {
               A boutique software studio building digital products for the hospitality industry. Precision-crafted experiences that elevate every guest touchpoint.
             </p>
             <a
-              href="mailto:info.darvincode@gmail.com"
+              href="mailto:info@darvincode.com"
               className="inline-flex items-center gap-2 text-[0.8125rem] text-[oklch(71%_0.105_42)] hover:text-[oklch(82%_0.090_42)] transition-colors duration-300 group w-fit"
             >
               <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none">
                 <rect x="1" y="3.5" width="14" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.3"/>
                 <path d="M1.5 4.5L8 9.5l6.5-5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
-              info.darvincode@gmail.com
+              info@darvincode.com
             </a>
           </div>
 

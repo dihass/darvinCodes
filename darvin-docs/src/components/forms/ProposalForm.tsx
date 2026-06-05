@@ -608,7 +608,7 @@ function BlockEditor({
               <Input
                 value={block.email}
                 onChange={(v) => onChange({ ...block, email: v })}
-                placeholder="info.darvincode@gmail.com"
+                placeholder="info@darvincode.com"
               />
             </div>
             <div>
@@ -649,7 +649,7 @@ function newBlock(type: SectionBlock["type"]): SectionBlock {
     case "next-steps":
       return { type: "next-steps", steps: [{ title: "", description: "" }] }
     case "cta":
-      return { type: "cta", headline: "Ready to get started?", email: "info.darvincode@gmail.com", website: "www.darvincode.com" }
+      return { type: "cta", headline: "Ready to get started?", email: "info@darvincode.com", website: "www.darvincode.com" }
     case "text":
       return { type: "text", body: "" }
   }

@@ -169,7 +169,8 @@ export default function ContactCTA() {
                   />
                   {status === "error" && (
                     <p className="text-[0.8125rem] text-red-500">
-                      Something went wrong — please try again or email us directly.
+                      Something went wrong — please try again or email us at{" "}
+                      <a href="mailto:info@darvincode.com" className="underline">info@darvincode.com</a>.
                     </p>
                   )}
                   <button

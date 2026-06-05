@@ -90,7 +90,7 @@ function emptyProposal(): Proposal {
           {
             type: "cta",
             headline: "Ready to get started?",
-            email: "info.darvincode@gmail.com",
+            email: "info@darvincode.com",
             website: "www.darvincode.com",
           },
         ],

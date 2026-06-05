@@ -628,7 +628,7 @@ function ContentFooter() {
     <View style={s.footer}>
       <Text style={s.footerText}>Darvin Code</Text>
       <Text style={s.footerDot}>·</Text>
-      <Text style={s.footerText}>info.darvincode@gmail.com</Text>
+      <Text style={s.footerText}>info@darvincode.com</Text>
       <Text style={s.footerDot}>·</Text>
       <Text style={s.footerText}>darvincode.com</Text>
     </View>
@@ -894,7 +894,7 @@ export function ProposalPDF({ proposal }: { proposal: Proposal }) {
         <View style={sC.coverFooter}>
           <View style={sC.coverFooterRule} />
           <Text style={sC.coverFooterText}>
-            Darvin Code · info.darvincode@gmail.com · darvincode.com
+            Darvin Code · info@darvincode.com · darvincode.com
           </Text>
         </View>
       </Page>

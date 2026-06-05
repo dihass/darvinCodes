@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 72" width="280" height="72" fill="none">
+  <!-- Circle mark -->
+  <circle cx="36" cy="36" r="36" fill="#C4622D"/>
+  <text
+    x="36" y="43"
+    text-anchor="middle"
+    fill="white"
+    font-family="'Courier New', Courier, monospace"
+    font-weight="700"
+    font-size="18"
+  >&lt;/&gt;</text>
+
+  <!-- Wordmark -->
+  <text
+    x="84" y="45"
+    fill="#1A1A1A"
+    font-family="'Urbanist', 'Inter', system-ui, sans-serif"
+    font-weight="700"
+    font-size="26"
+    letter-spacing="-0.3"
+  >Darvin Code</text>
+</svg>
