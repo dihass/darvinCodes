@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { error } = await resend.emails.send({
-    from: "Darvin Code Contact <onboarding@resend.dev>",
+    from: "Darvin Code Contact <contact@darvincode.com>",
     to: "info@darvincode.com",
     replyTo: email,
     subject: `New enquiry from ${name || email}`,

@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     "We build premium digital experiences and software for hotels, resorts, and hospitality brands. Crafted software that elevates every guest touchpoint.",
   icons: {
     icon: [{ url: "/favicon.png", type: "image/png", sizes: "48x48" }],
+    apple: [{ url: "/favicon.png", type: "image/png", sizes: "192x192" }],
   },
   openGraph: {
     title: "Darvin Code — Digital Studio for Hospitality",
