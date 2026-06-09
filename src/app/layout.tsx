@@ -18,6 +18,7 @@ const spectral = Spectral({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://darvincode.com"),
   title: "Darvin Code — Digital Studio for Hospitality",
   description:
     "We build premium digital experiences and software for hotels, resorts, and hospitality brands. Crafted software that elevates every guest touchpoint.",
