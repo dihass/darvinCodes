@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import RevealText, { RevealFade } from "@/components/ui/RevealText";
@@ -9,7 +10,7 @@ const project = {
   client: "Seascape",
   type: "Hospitality Web Experience",
   year: "2025",
-  url: "https://seascape-woad.vercel.app/",
+  url: "https://www.theseascapesrilanka.com/",
   description:
     "A refined digital experience for a luxury coastal property — immersive visuals, seamless booking flow, and a brand identity built for the discerning traveller.",
   tags: ["Web Design", "Engineering", "Brand"],
@@ -91,23 +92,19 @@ export default function FeaturedWork() {
             <span className="w-2.5 h-2.5 rounded-full bg-[oklch(78%_0.010_55)]" />
             <div className="flex-1 mx-4">
               <div className="mx-auto max-w-[320px] bg-[oklch(94%_0.008_55)] rounded-md px-3 py-1 text-[0.6875rem] text-[oklch(55%_0.008_55)] font-[400] text-center truncate">
-                seascape-woad.vercel.app
+                theseascapesrilanka.com
               </div>
             </div>
           </div>
 
-          {/* iframe preview */}
+          {/* Live-site screenshot (both the staging and production domains send X-Frame-Options: SAMEORIGIN, so an iframe preview renders blank) */}
           <div className="relative overflow-hidden" style={{ height: "clamp(320px,45vw,580px)" }}>
-            <iframe
-              src={project.url}
-              title="Seascape — live preview"
-              className="w-full h-full border-0 pointer-events-none select-none"
-              style={{
-                transform: "scale(1)",
-                transformOrigin: "top left",
-              }}
-              loading="lazy"
-              tabIndex={-1}
+            <Image
+              src="/work/theseascape.jpg"
+              alt="The Seascape Sri Lanka homepage — sunset over the Matara coastline"
+              fill
+              sizes="(max-width: 768px) 100vw, 90vw"
+              className="object-cover object-top select-none"
             />
             {/* Overlay to keep card clickable and add hover tint */}
             <motion.div
